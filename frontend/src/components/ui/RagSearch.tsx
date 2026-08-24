@@ -30,7 +30,8 @@ export const RagSearch: React.FC = () => {
     setResponse(null);
 
     try {
-      const res = await axios.post<QueryResponse>('http://127.0.0.1:8080/api/v1/query', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8080';
+      const res = await axios.post<QueryResponse>(`${apiUrl}/api/v1/query`, {
         query,
         top_k: 5
       });
