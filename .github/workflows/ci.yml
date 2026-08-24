@@ -1,0 +1,65 @@
+# =============================================================================
+# CI Pipeline — AI-Powered RAG Discovery Engine
+# =============================================================================
+# Runs on every PR and push to main:
+#   1. Lint with ruff
+#   2. Type-check with mypy
+#   3. Unit tests with pytest
+# =============================================================================
+
+name: CI — Lint, Type-Check, Test
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint with ruff
+        run: |
+          ruff check . --output-format=github
+
+      - name: Type-check with mypy
+        run: |
+          mypy scrapers/ models/ config/ --ignore-missing-imports
+
+      - name: Run unit tests
+        run: |
+          pytest tests/ -v --tb=short --junitxml=test-results.xml
+        env:
+          # Use empty defaults for API keys during CI
+          REDDIT_CLIENT_ID: ""
+          REDDIT_CLIENT_SECRET: ""
+          YOUTUBE_API_KEY: ""
+          TWITTER_BEARER_TOKEN: ""
+          INSTAGRAM_ACCESS_TOKEN: ""
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ""
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: test-results.xml

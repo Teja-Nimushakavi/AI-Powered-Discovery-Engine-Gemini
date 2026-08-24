@@ -1,0 +1,3 @@
+# Data raw staging directory
+# JSONL files from scraper runs are saved here
+# Files are gitignored — see .gitignore

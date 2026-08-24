@@ -1,0 +1,108 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["scrapers", "pipeline", "nlp", "api", "dashboard", "vectordb", "config", "models", "tests"]
+
+[project]
+name = "myntra-rag-discovery-engine"
+version = "0.1.0"
+description = "AI-Powered RAG Discovery Engine for Myntra Consumer Behavior"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [
+    {name = "Team"},
+]
+
+dependencies = [
+    # Data Models & Configuration
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "python-dotenv>=1.0.0",
+
+    # Scrapers
+    "google-play-scraper>=1.2.6",
+    "praw>=7.7.0",
+    "google-api-python-client>=2.100.0",
+    "tweepy>=4.14.0",
+    "requests",
+    "instaloader>=4.10.0",
+
+    # Database (Phase 2 prep)
+    "psycopg2-binary>=2.9.9",
+    "sqlalchemy>=2.0.23",
+    "alembic>=1.13.0",
+
+    # NLP & Dedup (Phase 2)
+    "datasketch>=1.6.4",
+    "langdetect>=1.0.9",
+    "clean-text>=0.6.0",
+
+    # NLP Enrichment & Vector DB (Phase 3)
+    "torch>=2.0.0",
+    "transformers>=4.35.0",
+    "sentence-transformers>=2.2.2",
+    "bertopic>=0.16.0",
+    "chromadb>=0.4.22",
+    "langchain-text-splitters>=0.0.1",
+
+    # RAG Engine & API (Phase 4)
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "langchain-google-genai>=1.0.0",
+    "rank_bm25>=0.2.2",
+
+    # Utilities
+    "rich>=13.7.0",
+    "click>=8.1.7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.3",
+    "pytest-mock>=3.12.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.8",
+    "mypy>=1.7.1",
+]
+
+[project.scripts]
+scrape = "run_scrapers:main"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

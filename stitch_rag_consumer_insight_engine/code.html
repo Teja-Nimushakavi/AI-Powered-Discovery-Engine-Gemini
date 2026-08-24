@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Myntra Consumer Insights - RAG Engine Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-on-surface": "#eef0ff",
+                      "on-secondary-container": "#fffbff",
+                      "surface-tint": "#0053db",
+                      "on-background": "#131b2e",
+                      "on-primary-container": "#eeefff",
+                      "on-surface": "#131b2e",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "tertiary-container": "#0074a6",
+                      "secondary-fixed-dim": "#d2bbff",
+                      "on-tertiary-container": "#e4f2ff",
+                      "error-container": "#ffdad6",
+                      "surface": "#faf8ff",
+                      "background": "#faf8ff",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "secondary-container": "#8a4cfc",
+                      "primary-container": "#2563eb",
+                      "secondary-fixed": "#eaddff",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#283044",
+                      "on-primary-fixed": "#00174b",
+                      "outline-variant": "#c3c6d7",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed-variant": "#5a00c6",
+                      "on-primary": "#ffffff",
+                      "inverse-primary": "#b4c5ff",
+                      "secondary": "#712ae2",
+                      "tertiary-fixed-dim": "#89ceff",
+                      "surface-container": "#eaedff",
+                      "tertiary": "#005a82",
+                      "primary-fixed": "#dbe1ff",
+                      "surface-container-highest": "#dae2fd",
+                      "on-error-container": "#93000a",
+                      "outline": "#737686",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed-variant": "#004c6e",
+                      "tertiary-fixed": "#c9e6ff",
+                      "on-tertiary-fixed": "#001e2f",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#d2d9f4",
+                      "surface-bright": "#faf8ff",
+                      "surface-variant": "#dae2fd",
+                      "primary": "#004ac6",
+                      "surface-container-low": "#f2f3ff",
+                      "surface-container-high": "#e2e7ff",
+                      "on-surface-variant": "#434655",
+                      "on-secondary-fixed": "#25005a"
+              },
+              "borderRadius": {
+                      "sm": "0.25rem",
+                      "DEFAULT": "0.5rem",
+                      "md": "0.75rem",
+                      "lg": "1rem",
+                      "xl": "1.5rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "32px",
+                      "gutter": "16px",
+                      "base": "8px",
+                      "glass-padding": "20px",
+                      "container-padding": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #f8fafc;
+            /* Using a very subtle grid pattern background for the technical/RAG engine feel without overwhelming the lightness */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .glass-inset-glow {
+             box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.8),
+                         0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+        
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #004ac6, #712ae2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #2563eb, #8a4cfc);
+        }
+        
+        /* Thin scrollbar for charts/tables */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.2);
+        }
+      </style>
+</head>
+<body class="font-body-md text-on-surface antialiased overflow-x-hidden min-h-screen flex">
+<!-- SideNavBar (Shared Component JSON) -->
+<nav class="hidden md:flex flex-col h-full py-8 px-4 fixed left-0 top-0 w-64 border-r border-black/10 bg-white/85 backdrop-blur-xl shadow-sm z-50">
+<!-- Header Avatar & Title -->
+<div class="flex items-center gap-3 mb-12 px-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant flex-shrink-0">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A clean, modern, professional avatar illustration of a user in a light blue minimalist aesthetic suitable for an enterprise analytics dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXOUXSXrlVMhiDgkqE3VqxXH7a83Gv4jmJgThJOCvd1kY8BCsD2uz5RJ7YxnIcTeJPQ3HZeucR1-ThmOgHYQNAeIt55CMQizLCMwwASpO1NFSc9ja7wEEEI4Jusnmg3vsudoZNdzA_lACSj5fAwF3hb9TmleXiAC-xuLVem9RuUhnx3X2w2TSszCueWTrzz_zXXCGLtvrU8HKy-MdxdJvGD2P6eNBf6dDJ8eHD332QwlPuAuLbhde9PA"/>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-primary">RAG Engine</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Discovery Mode</p>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full mb-8 py-3 px-4 bg-gradient-primary text-white rounded-md shadow-sm hover:opacity-90 transition-opacity font-label-md text-label-md flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            New Analysis
+        </button>
+<!-- Main Navigation Links -->
+<div class="flex-grow space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold bg-primary/5 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-primary/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">manage_search</span>
+<span class="font-body-md text-body-md group-hover:text-primary transition-colors">Semantic Search</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-primary/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">insights</span>
+<span class="font-body-md text-body-md group-hover:text-primary transition-colors">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-primary/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">forum</span>
+<span class="font-body-md text-body-md group-hover:text-primary transition-colors">Raw Feedback</span>
+</a>
+</div>
+<!-- Footer Navigation Links -->
+<div class="mt-auto space-y-2 border-t border-outline-variant/30 pt-4">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-primary/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">settings</span>
+<span class="font-body-sm text-body-sm group-hover:text-primary transition-colors">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-primary/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors text-[20px]">help_outline</span>
+<span class="font-body-sm text-body-sm group-hover:text-primary transition-colors">Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar (Shared Component JSON) -->
+<header class="flex justify-between items-center w-full px-8 h-20 max-w-full md:max-w-full docked top-0 border-b border-black/10 bg-white/85 backdrop-blur-xl shadow-sm z-40 sticky">
+<!-- Brand Logo / Product Name -->
+<div class="font-display-lg text-headline-md font-bold text-primary truncate">
+                Myntra Consumer Insights
+            </div>
+<!-- Navigation Links (Center-ish, hidden on mobile) -->
+<nav class="hidden lg:flex items-center gap-6">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-2 font-semibold" href="#">Overview</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Metrics</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Sources</a>
+</nav>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-4">
+<!-- Icon Actions -->
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+<!-- Trailing Primary Action -->
+<button class="hidden sm:block py-2 px-4 border border-black/10 bg-white/85 rounded-md text-primary font-label-md text-label-md hover:bg-surface-container transition-colors shadow-sm">
+                    Analyze
+                 </button>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="flex-1 p-6 md:p-8 space-y-section-gap max-w-7xl mx-auto w-full">
+<!-- Metrics Row (Top) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Metric 1 -->
+<div class="glass-panel glass-inset-glow rounded-lg p-container-padding flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Feedback Indexed</h3>
+<div class="p-2 bg-surface-container-highest rounded-lg text-primary">
+<span class="material-symbols-outlined text-[20px]">database</span>
+</div>
+</div>
+<div class="mt-auto flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-background">1.2M</span>
+<span class="font-body-sm text-body-sm text-secondary font-medium flex items-center">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span> 12%
+                        </span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="glass-panel glass-inset-glow rounded-lg p-container-padding flex flex-col border border-primary/20 relative overflow-hidden">
+<!-- Subtle accent gradient for the 'top' friction point -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Top Friction Point</h3>
+<div class="p-2 bg-error-container rounded-lg text-error">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+</div>
+<div class="mt-auto relative z-10">
+<span class="font-headline-lg text-headline-lg text-on-background block leading-tight">Checkout Latency</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1 block">Impacts 18% of iOS sessions</span>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="glass-panel glass-inset-glow rounded-lg p-container-padding flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Avg Sentiment</h3>
+<div class="p-2 bg-surface-container-highest rounded-lg text-tertiary">
+<span class="material-symbols-outlined text-[20px]">sentiment_satisfied</span>
+</div>
+</div>
+<div class="mt-auto flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-background">4.2<span class="text-headline-md text-outline">/5</span></span>
+<span class="font-body-sm text-body-sm text-outline font-medium">Rolling 30d</span>
+</div>
+</div>
+</section>
+<!-- RAG Search Section -->
+<section class="glass-panel rounded-lg p-8 relative overflow-hidden" style="border: 2px solid transparent; background-image: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), linear-gradient(135deg, #2563eb, #8a4cfc); background-origin: border-box; background-clip: padding-box, border-box;">
+<!-- Abstract Background for Search -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-lowest to-surface-container-low opacity-50 z-0"></div>
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl z-0 pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-secondary/10 rounded-full blur-3xl z-0 pointer-events-none"></div>
+<div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-2">Ask the Data</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-2xl">Query thousands of reviews, support tickets, and app store feedback using natural language to uncover hidden consumer insights.</p>
+<div class="w-full flex flex-col sm:flex-row gap-4">
+<div class="relative flex-grow">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full pl-12 pr-4 py-4 bg-white/95 border-0 rounded-md shadow-sm focus:ring-2 focus:ring-primary focus:outline-none font-body-md text-body-md text-on-background placeholder-outline transition-shadow" placeholder="e.g., 'Why are users abandoning carts on Android during the evening?'" type="text"/>
+</div>
+<button class="bg-gradient-primary text-white px-8 py-4 rounded-md font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group flex-shrink-0">
+                            Analyze
+                            <span class="material-symbols-outlined group-hover:scale-110 transition-transform text-[18px]">temp_preferences_custom</span>
+</button>
+</div>
+<div class="mt-4 flex flex-wrap justify-center gap-2">
+<span class="font-label-md text-label-md text-outline mr-2 self-center">Suggested:</span>
+<button class="px-3 py-1 bg-surface-container-highest/50 border border-outline-variant/30 rounded-full font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">Return policy complaints</button>
+<button class="px-3 py-1 bg-surface-container-highest/50 border border-outline-variant/30 rounded-full font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">Sizing issues on dresses</button>
+</div>
+</div>
+</section>
+<!-- Analytics Row -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left: Sentiment Timeline (60%) -->
+<div class="lg:col-span-7 glass-panel rounded-lg p-container-padding flex flex-col h-96">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-background">Sentiment Timeline</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rolling 30 days overall brand perception</p>
+</div>
+<button class="p-2 hover:bg-surface-container rounded-lg text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Chart Placeholder Area -->
+<div class="flex-1 relative w-full border-b border-l border-outline-variant/30 flex items-end px-2 pb-2">
+<!-- Y-Axis Labels -->
+<div class="absolute left-0 bottom-0 h-full flex flex-col justify-between -ml-6 text-xs text-outline font-label-md">
+<span>100</span>
+<span>50</span>
+<span>0</span>
+</div>
+<!-- Decorative SVG line chart (Placeholder for real chart library) -->
+<svg class="w-full h-[80%] text-primary overflow-visible" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Grid lines -->
+<line stroke="currentColor" stroke-dasharray="2 2" stroke-opacity="0.1" x1="0" x2="100" y1="50" y2="50"></line>
+<!-- Gradient Area under line -->
+<lineargradient id="chart-gradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#004ac6" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#004ac6" stop-opacity="0.0"></stop>
+</lineargradient>
+<path d="M0,80 C10,70 20,90 30,60 C40,30 50,70 60,40 C70,10 80,50 90,30 L100,20 L100,100 L0,100 Z" fill="url(#chart-gradient)"></path>
+<!-- Main Line -->
+<path d="M0,80 C10,70 20,90 30,60 C40,30 50,70 60,40 C70,10 80,50 90,30 L100,20" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<!-- Data Point (Hover simulation) -->
+<circle class="animate-pulse" cx="60" cy="40" fill="white" r="4" stroke="#004ac6" stroke-width="2"></circle>
+</svg>
+<!-- X-Axis Labels -->
+<div class="absolute -bottom-6 left-0 w-full flex justify-between text-xs text-outline font-label-md px-2">
+<span>Oct 1</span>
+<span>Oct 15</span>
+<span>Oct 30</span>
+</div>
+</div>
+</div>
+<!-- Right: Opportunity Heatmap (40%) -->
+<div class="lg:col-span-5 glass-panel rounded-lg p-container-padding flex flex-col h-96">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-background">Opportunity Heatmap</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Friction points by volume &amp; impact</p>
+</div>
+<button class="p-2 hover:bg-surface-container rounded-lg text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<!-- Heatmap Grid -->
+<div class="flex-1 grid grid-cols-2 grid-rows-3 gap-2">
+<!-- High Impact / High Volume -->
+<div class="bg-error-container/80 rounded-lg p-3 flex flex-col justify-between border border-error/20 hover:border-error/50 transition-colors cursor-pointer group">
+<span class="font-label-md text-label-md text-on-error-container block">Checkout Latency</span>
+<div class="flex justify-between items-end">
+<span class="font-headline-md text-headline-md-mobile text-on-error-container">1.2k</span>
+<span class="material-symbols-outlined text-[16px] text-error group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+<!-- High Impact / Med Volume -->
+<div class="bg-secondary-container/30 rounded-lg p-3 flex flex-col justify-between border border-secondary/10 hover:border-secondary/30 transition-colors cursor-pointer group">
+<span class="font-label-md text-label-md text-on-surface block">Payment Gateway Fail</span>
+<div class="flex justify-between items-end">
+<span class="font-headline-md text-headline-md-mobile text-on-surface">450</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+<!-- Med Impact / High Volume -->
+<div class="bg-primary-container/20 rounded-lg p-3 flex flex-col justify-between border border-primary/10 hover:border-primary/30 transition-colors cursor-pointer group">
+<span class="font-label-md text-label-md text-on-surface block">Search Relevance</span>
+<div class="flex justify-between items-end">
+<span class="font-headline-md text-headline-md-mobile text-on-surface">890</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+<!-- Med Impact / Med Volume -->
+<div class="bg-surface-container-highest rounded-lg p-3 flex flex-col justify-between border border-outline-variant/30 hover:border-outline-variant/60 transition-colors cursor-pointer group">
+<span class="font-label-md text-label-md text-on-surface block">Filter UX</span>
+<div class="flex justify-between items-end">
+<span class="font-headline-md text-headline-md-mobile text-on-surface">320</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+<!-- Low Impact / High Volume -->
+<div class="bg-surface-container-highest rounded-lg p-3 flex flex-col justify-between border border-outline-variant/30 hover:border-outline-variant/60 transition-colors cursor-pointer group col-span-2 sm:col-span-1">
+<span class="font-label-md text-label-md text-on-surface block">App Launch Speed</span>
+<div class="flex justify-between items-end">
+<span class="font-headline-md text-headline-md-mobile text-on-surface">1.5k</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Cited Sources Section -->
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-background">AI-Cited Raw Feedback</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Selected verbatim reviews driving the current 'Checkout Latency' anomaly.</p>
+</div>
+<a class="font-label-md text-label-md text-primary hover:underline flex items-center gap-1" href="#">View All Sources <span class="material-symbols-outlined text-[16px]">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Card 1 -->
+<div class="glass-panel rounded-lg p-6 flex flex-col h-full border-t-2 border-t-error">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant rounded font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">phone_iphone</span> App Store
+                                </span>
+<span class="text-xs text-outline font-body-sm">2 hours ago</span>
+</div>
+<span class="px-2 py-1 bg-error-container/50 text-error rounded font-label-md text-[10px] uppercase tracking-wider border border-error/20">Negative</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic flex-grow">
+                            "Love the clothes but the app is unusable lately. Every time I try to go to my cart to pay, it just spins for like 30 seconds before crashing."
+                        </p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-outline">User ID: a8f9...2c</span>
+<button class="text-primary hover:bg-primary/5 p-1 rounded transition-colors" title="View details">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel rounded-lg p-6 flex flex-col h-full border-t-2 border-t-error">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant rounded font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">android</span> Play Store
+                                </span>
+<span class="text-xs text-outline font-body-sm">5 hours ago</span>
+</div>
+<span class="px-2 py-1 bg-error-container/50 text-error rounded font-label-md text-[10px] uppercase tracking-wider border border-error/20">Negative</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic flex-grow">
+                            "Payment keeps failing. I hit complete order, it loads forever, then says error. Tried 3 different cards. Giving up."
+                        </p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-outline">User ID: v7x2...9m</span>
+<button class="text-primary hover:bg-primary/5 p-1 rounded transition-colors" title="View details">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-panel rounded-lg p-6 flex flex-col h-full border-t-2 border-t-secondary">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant rounded font-label-md text-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">support_agent</span> Helpdesk
+                                </span>
+<span class="text-xs text-outline font-body-sm">1 day ago</span>
+</div>
+<span class="px-2 py-1 bg-secondary-container/30 text-secondary rounded font-label-md text-[10px] uppercase tracking-wider border border-secondary/20">Neutral</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic flex-grow">
+                            "I managed to order but the checkout process felt extremely sluggish compared to last month. Is there an issue with the servers?"
+                        </p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-outline">Ticket: #48291</span>
+<button class="text-primary hover:bg-primary/5 p-1 rounded transition-colors" title="View details">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

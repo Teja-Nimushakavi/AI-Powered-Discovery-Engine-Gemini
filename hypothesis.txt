@@ -1,0 +1,192 @@
+This is a Wishlist to Purchase Analysis for Myntra.
+MY CORE PROBLEM:
+Understand why users add/save fashion products to their wishlist but do not purchase them within 30 days, and identify an opportunity for an AI-powered solution to improve wishlist-to-purchase conversion.
+
+I have a dataset of Myntra/e-commerce customer reviews. Analyse the dataset specifically for this problem.
+
+IMPORTANT:
+Do NOT simply give me generic sentiment analysis such as "positive/negative", and do NOT focus primarily on technical issues like app crashes, payment failures, or checkout latency unless they are clearly connected to the user's decision not to purchase a product.
+
+I need PRODUCT DISCOVERY RESEARCH.
+
+STEP 1 — CLEAN THE DATA
+- Remove duplicates.
+- Remove empty/irrelevant reviews.
+- Keep the original review text.
+- Do not invent, rewrite, or fabricate customer statements.
+- Report the total number of reviews before and after cleaning.
+
+STEP 2 — IDENTIFY RELEVANT REVIEWS
+Classify every review into one of these categories:
+
+A. DIRECTLY RELEVANT:
+The review explicitly mentions or strongly indicates:
+- wishlist
+- saved items
+- save for later
+- shortlisted products
+- added but did not buy
+- waiting to purchase
+- liked the product but didn't purchase
+- comparing products before buying
+
+B. INDIRECTLY RELEVANT:
+The review does not mention wishlist, but describes a barrier that could reasonably prevent a user from purchasing a fashion product, such as:
+- price too high
+- waiting for discount/sale
+- uncertainty about quality
+- uncertainty about size/fit
+- uncertainty about appearance
+- lack of trust
+- poor/insufficient reviews
+- difficulty comparing products
+- too many similar choices
+- difficulty discovering the right product
+- product availability
+- delivery concern
+- return/exchange concern
+- lack of useful recommendations
+- uncertainty about whether the product is worth buying
+
+C. NOT RELEVANT:
+Issues that have no meaningful connection to wishlist-to-purchase behaviour, such as generic app crashes, login issues, unrelated technical problems, etc.
+
+DO NOT assume that every indirect issue causes wishlist abandonment. Mark it as a potential barrier, not a proven cause.
+
+STEP 3 — EXTRACT STRUCTURED DATA FOR EVERY RELEVANT REVIEW
+
+For each relevant review, create these fields:
+
+1. Review ID
+2. Original review text
+3. Relevance:
+   - Direct
+   - Indirect
+4. Sentiment:
+   - Positive
+   - Neutral
+   - Negative
+5. User behaviour:
+   - Wishlisted/Saved
+   - Considered but didn't buy
+   - Compared products
+   - Waiting
+   - Purchased
+   - Other
+   - Unknown
+6. Purchase barrier:
+   - Price
+   - Discount waiting
+   - Size/Fit
+   - Quality uncertainty
+   - Product appearance
+   - Reviews/ratings
+   - Trust
+   - Choice overload
+   - Product comparison
+   - Product discovery
+   - Availability
+   - Delivery
+   - Return/Exchange
+   - Recommendations
+   - Other
+   - Unknown
+7. Root cause/theme
+8. Evidence/explanation from the review
+9. Confidence:
+   - High
+   - Medium
+   - Low
+
+IMPORTANT:
+Only classify a behaviour or barrier when there is evidence in the review. If it cannot be determined, use "Unknown". Do not guess.
+
+STEP 4 — FIND PATTERNS
+
+After classifying the reviews, calculate:
+
+- Total reviews analysed
+- Total directly relevant reviews
+- Total indirectly relevant reviews
+- Total relevant reviews
+- Percentage of total reviews that are relevant
+- Frequency and percentage of each purchase barrier
+- Frequency and percentage of each root-cause/theme
+- Frequency of direct wishlist behaviour
+- Frequency of each user behaviour
+
+For each major theme, provide 2–5 representative ORIGINAL review examples.
+
+Do not fabricate quotes.
+
+STEP 5 — CREATE PM HYPOTHESES
+
+Based ONLY on the strongest evidence in the dataset, generate 3–5 testable product hypotheses.
+
+Use this format:
+
+H1:
+We believe that ______ is a major reason users do not purchase wishlisted products because ______.
+
+Evidence:
+- Number of relevant reviews
+- Percentage
+- Supporting review examples
+
+What needs validation:
+What we still need to learn from real users.
+
+Do NOT label a hypothesis "validated" based only on reviews.
+
+The reviews are SECONDARY RESEARCH.
+They generate hypotheses.
+They do NOT prove the hypotheses.
+
+STEP 6 — PRIORITIZE THE HYPOTHESES
+
+Create a table with:
+
+Hypothesis | Evidence volume | User impact | Confidence | Priority
+
+Use High/Medium/Low rather than inventing precise scores unless the data supports them.
+
+STEP 7 — PRODUCT OPPORTUNITY
+
+Based on the strongest hypotheses, identify the top 1–2 product opportunities for Myntra.
+
+For each opportunity explain:
+
+- User problem
+- Evidence
+- Likely user need
+- Why it matters to wishlist-to-purchase conversion
+- What should be validated through user interviews
+- Possible AI solution direction
+
+IMPORTANT:
+Do NOT jump directly to an AI solution.
+First establish the problem and evidence.
+
+STEP 8 — CREATE THE FINAL OUTPUT
+
+Give me these sections in the final output (do not use numbers, just bold headers):
+
+**Relevant-review dataset/table**
+**Purchase-Barrier Frequency** table
+**Top themes**
+**Evidence examples** (When citing AI-Cited Raw Feedback, ensure all links are clickable and working)
+**3–5 hypotheses**
+**Hypothesis Prioritization**
+**Top product opportunity**
+**User-interview questions needed to validate the hypotheses**
+
+ALSO CREATE A CSV/Excel-READY TABLE containing ONLY the relevant reviews with all the structured fields above.
+
+QUALITY RULES:
+- Never fabricate reviews, numbers, users, or evidence.
+- Preserve original review text.
+- Clearly distinguish evidence from assumptions.
+- Do not call something "validated" unless it has been validated through primary user research.
+- Do not manufacture a large wishlist dataset if the reviews do not contain wishlist signals.
+- If the dataset does not contain enough direct wishlist evidence, explicitly tell me that and use indirect purchase-barrier evidence only for hypothesis generation.
+- Keep the analysis focused on FASHION SHOPPING and wishlist-to-purchase behaviour.
