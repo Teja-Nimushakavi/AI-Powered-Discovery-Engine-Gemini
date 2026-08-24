@@ -1,14 +1,15 @@
 # =============================================================================
-# Dockerfile — AI-Powered RAG Discovery Engine
-# =============================================================================
-# Multi-stage build for the Python application
+# Dockerfile — AI-Powered RAG Discovery Engine (Hugging Face Spaces)
 # =============================================================================
 
-FROM python:3.11-slim AS base
+FROM python:3.12-slim
 
 # Prevent Python from writing .pyc files and enable unbuffered output
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    PORT=7860
+
+WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -17,24 +18,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user
-RUN groupadd --gid 1000 appuser && \
-    useradd --uid 1000 --gid 1000 --create-home appuser
+# Create non-root user (Hugging Face runs as user 1000)
+RUN useradd -m -u 1000 user
 
-WORKDIR /app
+# Install Python dependencies
+COPY requirements_api.txt .
+RUN pip install --no-cache-dir -r requirements_api.txt
 
-# ── Install Python dependencies ───────────────────────────────────────
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# ── Copy application source ───────────────────────────────────────────
+# Copy application source
 COPY . .
 
-# Create data directories
-RUN mkdir -p data/raw && chown -R appuser:appuser /app
+# Set permissions for the data directories so user 1000 can read/write them
+RUN chown -R user:user /app
 
 # Switch to non-root user
-USER appuser
+USER user
 
-# Default command — can be overridden
-CMD ["python", "run_scrapers.py", "--all"]
+# Expose Hugging Face's required port
+EXPOSE 7860
+
+# Run FastAPI server
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "7860"]
