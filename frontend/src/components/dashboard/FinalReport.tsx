@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Download, TrendingUp, Search } from 'lucide-react';
+import { Download, TrendingUp, Search } from 'lucide-react';
 
 export const FinalReport: React.FC = () => {
   return (
