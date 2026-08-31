@@ -55,11 +55,13 @@ Here is the PM Hypotheses Report based strictly on the provided feedback:
 
 ---
 
-### **H3: Price Friction from Non-Refundable Platform Fees**
-* **We believe that** the addition of high, non-refundable platform fees at checkout **is a major reason users do not purchase wishlisted products because** it increases the perceived cost of the product at the final step, causing immediate cart/wishlist abandonment.
+### **H3: Multi-Layered Price Friction (Discount Waiting, Competitor Pricing, & Hidden Fees)**
+* **We believe that** complex price dynamics—specifically users waiting for deep discounts, comparing prices with competitors, and encountering high, non-refundable platform fees at checkout—**are a major reason users do not purchase wishlisted products because** the combination makes them feel they are not getting the best possible deal, leading to hesitation and ultimate cart/wishlist abandonment.
 * **Evidence:** 
-  * A user specifically complained about a "very High platform Fee" that was "not refunded" (Chunk 46).
-* **What needs validation:** We need to validate if users are dropping off at the final payment screen specifically when the platform fee is added, and if offering platform fee waivers (e.g., for first-time wishlist conversions or loyalty members) improves purchase rates.
+  * **Discount Waiting (16.72%):** Users use the wishlist as a holding area, waiting for major sale events like EORS before committing.
+  * **Competitor Pricing:** Users frequently compare Myntra's prices against other platforms (like Ajio) to ensure they are getting the best value.
+  * **Platform Fees:** Users specifically complained about a "very High platform Fee" that was "not refunded," causing last-minute checkout abandonment (Chunk 46).
+* **What needs validation:** We need to validate if offering "Price-Match Guarantees," triggering smart "Price Drop Alerts" for wishlisted items, or providing platform fee waivers for first-time wishlist conversions increases purchase rates.
 
 ---
 
